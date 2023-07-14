@@ -8,7 +8,7 @@ import re
 @for_app("pacman")
 def match(command):
     return command.output.startswith("error: invalid option '-") and any(
-        " -{}".format(option) in command.script for option in "surqfdvt"
+        f" -{option}" in command.script for option in "surqfdvt"
     )
 
 

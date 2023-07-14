@@ -3,13 +3,14 @@ from thefuck.utils import get_closest, for_app
 
 
 def extract_possibilities(command):
-    possib = re.findall(r'\n\(did you mean one of ([^\?]+)\?\)', command.output)
-    if possib:
+    if possib := re.findall(
+        r'\n\(did you mean one of ([^\?]+)\?\)', command.output
+    ):
         return possib[0].split(', ')
-    possib = re.findall(r'\n    ([^$]+)$', command.output)
-    if possib:
+    if possib := re.findall(r'\n    ([^$]+)$', command.output):
         return possib[0].split(' ')
-    return possib
+    else:
+        return possib
 
 
 @for_app('hg')

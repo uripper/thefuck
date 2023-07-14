@@ -12,8 +12,7 @@ class TestPowershell(object):
 
     @pytest.fixture(autouse=True)
     def Popen(self, mocker):
-        mock = mocker.patch('thefuck.shells.powershell.Popen')
-        return mock
+        return mocker.patch('thefuck.shells.powershell.Popen')
 
     def test_and_(self, shell):
         assert shell.and_('ls', 'cd') == '(ls) -and (cd)'
@@ -35,7 +34,10 @@ class TestPowershell(object):
         Popen.return_value.stdout.read.side_effect = side_effect
         assert shell.info() == expected_version
         assert Popen.call_count == len(call_args)
-        assert all([Popen.call_args_list[i][0][0][0] == call_arg for i, call_arg in enumerate(call_args)])
+        assert all(
+            Popen.call_args_list[i][0][0][0] == call_arg
+            for i, call_arg in enumerate(call_args)
+        )
 
     def test_get_version_error(self, shell, Popen):
         Popen.return_value.stdout.read.side_effect = RuntimeError

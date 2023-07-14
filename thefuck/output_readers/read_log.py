@@ -98,7 +98,7 @@ def get_output(script):
             _skip_old_lines(buffer)
             lines = _get_output_lines(script, buffer)
             output = '\n'.join(lines).strip()
-            logs.debug(u'Received output: {}'.format(output))
+            logs.debug(f'Received output: {output}')
             return output
     except OSError:
         logs.warn("Can't read output log")

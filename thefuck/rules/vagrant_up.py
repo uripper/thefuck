@@ -9,13 +9,12 @@ def match(command):
 
 def get_new_command(command):
     cmds = command.script_parts
-    machine = None
-    if len(cmds) >= 3:
-        machine = cmds[2]
-
+    machine = cmds[2] if len(cmds) >= 3 else None
     start_all_instances = shell.and_(u"vagrant up", command.script)
     if machine is None:
         return start_all_instances
     else:
-        return [shell.and_(u"vagrant up {}".format(machine), command.script),
-                start_all_instances]
+        return [
+            shell.and_(f"vagrant up {machine}", command.script),
+            start_all_instances,
+        ]

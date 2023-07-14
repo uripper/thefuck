@@ -9,4 +9,4 @@ def match(command):
 
 @git_support
 def get_new_command(command):
-    return command.script + ' --allow-unrelated-histories'
+    return f'{command.script} --allow-unrelated-histories'

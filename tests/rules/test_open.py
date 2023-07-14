@@ -5,7 +5,7 @@ from thefuck.types import Command
 
 @pytest.fixture
 def output(script):
-    return 'The file {} does not exist.\n'.format(script.split(' ', 1)[1])
+    return f"The file {script.split(' ', 1)[1]} does not exist.\n"
 
 
 @pytest.mark.parametrize('script', [

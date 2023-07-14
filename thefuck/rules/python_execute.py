@@ -12,4 +12,4 @@ def match(command):
 
 
 def get_new_command(command):
-    return command.script + '.py'
+    return f'{command.script}.py'

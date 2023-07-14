@@ -57,13 +57,10 @@ class Settings(dict):
         user_dir = Path(xdg_config_home, 'thefuck').expanduser()
         legacy_user_dir = Path('~', '.thefuck').expanduser()
 
-        # For backward compatibility use legacy '~/.thefuck' if it exists:
-        if legacy_user_dir.is_dir():
-            warn(u'Config path {} is deprecated. Please move to {}'.format(
-                legacy_user_dir, user_dir))
-            return legacy_user_dir
-        else:
+        if not legacy_user_dir.is_dir():
             return user_dir
+        warn(f'Config path {legacy_user_dir} is deprecated. Please move to {user_dir}')
+        return legacy_user_dir
 
     def _setup_user_dir(self):
         """Returns user config dir, create it when it doesn't exist."""

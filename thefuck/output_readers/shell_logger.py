@@ -20,10 +20,7 @@ def is_available():
 
     """
     path = _get_socket_path()
-    if not path:
-        return False
-
-    return os.path.exists(path)
+    return False if not path else os.path.exists(path)
 
 
 def _get_last_n(n):
@@ -53,8 +50,7 @@ def get_output(script):
         for command in commands:
             if command['command'] == script:
                 lines = _get_output_lines(command['output'])
-                output = '\n'.join(lines).strip()
-                return output
+                return '\n'.join(lines).strip()
             else:
                 logs.warn("Output isn't available in shell logger")
                 return None

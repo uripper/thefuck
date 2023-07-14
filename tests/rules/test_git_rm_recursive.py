@@ -5,7 +5,7 @@ from thefuck.types import Command
 
 @pytest.fixture
 def output(target):
-    return "fatal: not removing '{}' recursively without -r".format(target)
+    return f"fatal: not removing '{target}' recursively without -r"
 
 
 @pytest.mark.parametrize('script, target', [

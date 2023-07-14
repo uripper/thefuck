@@ -32,7 +32,6 @@ def get_new_command(command):
     script = command.script
     for not_found in not_found_commands:
         fix = get_closest(not_found, possible_commands)
-        script = script.replace(' {}'.format(not_found),
-                                ' {}'.format(fix))
+        script = script.replace(f' {not_found}', f' {fix}')
 
     return script

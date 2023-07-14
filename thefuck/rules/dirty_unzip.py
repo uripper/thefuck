@@ -19,10 +19,7 @@ def _zip_file(command):
     #                archive to unzip
     for c in command.script_parts[1:]:
         if not c.startswith('-'):
-            if c.endswith('.zip'):
-                return c
-            else:
-                return u'{}.zip'.format(c)
+            return c if c.endswith('.zip') else f'{c}.zip'
 
 
 @for_app('unzip')
@@ -30,16 +27,11 @@ def match(command):
     if '-d' in command.script:
         return False
 
-    zip_file = _zip_file(command)
-    if zip_file:
-        return _is_bad_zip(zip_file)
-    else:
-        return False
+    return _is_bad_zip(zip_file) if (zip_file := _zip_file(command)) else False
 
 
 def get_new_command(command):
-    return u'{} -d {}'.format(
-        command.script, shell.quote(_zip_file(command)[:-4]))
+    return f'{command.script} -d {shell.quote(_zip_file(command)[:-4])}'
 
 
 def side_effect(old_cmd, command):

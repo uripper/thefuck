@@ -14,4 +14,4 @@ def match(command):
 
 @sudo_support
 def get_new_command(command):
-    return 'python ' + command.script
+    return f'python {command.script}'

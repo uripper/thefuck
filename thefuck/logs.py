@@ -11,10 +11,7 @@ from . import const
 
 def color(color_):
     """Utility for ability to disabling colored output."""
-    if settings.no_colors:
-        return ''
-    else:
-        return color_
+    return '' if settings.no_colors else color_
 
 
 def warn(title):
@@ -37,7 +34,7 @@ def exception(title, exc_info):
 
 
 def rule_failed(rule, exc_info):
-    exception(u'Rule {}'.format(rule.name), exc_info)
+    exception(f'Rule {rule.name}', exc_info)
 
 
 def failed(msg):
@@ -87,7 +84,7 @@ def debug_time(msg):
     try:
         yield
     finally:
-        debug(u'{} took: {}'.format(msg, datetime.now() - started))
+        debug(f'{msg} took: {datetime.now() - started}')
 
 
 def how_to_configure_alias(configuration_details):
@@ -136,6 +133,5 @@ def configured_successfully(configuration_details):
 
 def version(thefuck_version, python_version, shell_info):
     sys.stderr.write(
-        u'The Fuck {} using Python {} and {}\n'.format(thefuck_version,
-                                                       python_version,
-                                                       shell_info))
+        f'The Fuck {thefuck_version} using Python {python_version} and {shell_info}\n'
+    )

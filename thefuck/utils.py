@@ -135,13 +135,13 @@ def get_all_executables():
 
 def replace_argument(script, from_, to):
     """Replaces command line argument."""
-    replaced_in_the_end = re.sub(u' {}$'.format(re.escape(from_)), u' {}'.format(to),
-                                 script, count=1)
+    replaced_in_the_end = re.sub(
+        f' {re.escape(from_)}$', f' {to}', script, count=1
+    )
     if replaced_in_the_end != script:
         return replaced_in_the_end
     else:
-        return script.replace(
-            u' {} '.format(from_), u' {} '.format(to), 1)
+        return script.replace(f' {from_} ', f' {to} ', 1)
 
 
 @decorator
@@ -177,7 +177,7 @@ def is_app(command, *app_names, **kwargs):
 
     at_least = kwargs.pop('at_least', 0)
     if kwargs:
-        raise TypeError("got an unexpected keyword argument '{}'".format(kwargs.keys()))
+        raise TypeError(f"got an unexpected keyword argument '{kwargs.keys()}'")
 
     if len(command.script_parts) > at_least:
         return os.path.basename(command.script_parts[0]) in app_names
@@ -188,10 +188,7 @@ def is_app(command, *app_names, **kwargs):
 def for_app(*app_names, **kwargs):
     """Specifies that matching script is for one of app names."""
     def _for_app(fn, command):
-        if is_app(command, *app_names, **kwargs):
-            return fn(command)
-        else:
-            return False
+        return fn(command) if is_app(command, *app_names, **kwargs) else False
 
     return decorator(_for_app)
 
@@ -259,10 +256,9 @@ class Cache(object):
 
         if self._db.get(key, {}).get('etag') == etag:
             return self._db[key]['value']
-        else:
-            value = fn(*args, **kwargs)
-            self._db[key] = {'etag': etag, 'value': value}
-            return value
+        value = fn(*args, **kwargs)
+        self._db[key] = {'etag': etag, 'value': value}
+        return value
 
 
 _cache = Cache()
@@ -327,9 +323,13 @@ def get_valid_history_without_current(command):
     executables = set(get_all_executables())\
         .union(shell.get_builtin_commands())
 
-    return [line for line in _not_corrected(history, tf_alias)
-            if not line.startswith(tf_alias) and not line == command.script
-            and line.split(' ')[0] in executables]
+    return [
+        line
+        for line in _not_corrected(history, tf_alias)
+        if not line.startswith(tf_alias)
+        and line != command.script
+        and line.split(' ')[0] in executables
+    ]
 
 
 def format_raw_script(raw_script):

@@ -5,7 +5,7 @@ from thefuck.types import Command
 
 @pytest.fixture
 def output(src_branch_name):
-    return "fatal: A branch named '{}' already exists.".format(src_branch_name)
+    return f"fatal: A branch named '{src_branch_name}' already exists."
 
 
 @pytest.fixture

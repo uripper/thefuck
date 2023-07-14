@@ -5,8 +5,7 @@ from thefuck.types import Command
 
 @pytest.fixture
 def output(target):
-    return ('error: the following file has local modifications:\n    {}\n(use '
-            '--cached to keep the file, or -f to force removal)').format(target)
+    return f'error: the following file has local modifications:\n    {target}\n(use --cached to keep the file, or -f to force removal)'
 
 
 @pytest.mark.parametrize('script, target', [

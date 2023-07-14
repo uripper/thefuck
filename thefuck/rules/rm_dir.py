@@ -10,7 +10,5 @@ def match(command):
 
 @sudo_support
 def get_new_command(command):
-    arguments = '-rf'
-    if 'hdfs' in command.script:
-        arguments = '-r'
-    return re.sub('\\brm (.*)', 'rm ' + arguments + ' \\1', command.script)
+    arguments = '-r' if 'hdfs' in command.script else '-rf'
+    return re.sub('\\brm (.*)', f'rm {arguments}' + ' \\1', command.script)

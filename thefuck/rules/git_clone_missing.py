@@ -27,16 +27,17 @@ def match(command):
         return False
     url = parse.urlparse(command.script, scheme='ssh')
     # HTTP URLs need a network address
-    if not url.netloc and url.scheme != 'ssh':
+    if url.netloc or url.scheme == 'ssh':
+            # SSH needs a username and a splitter between the path
+        return (
+            False
+            if url.scheme == 'ssh'
+            and ('@' not in command.script or ':' not in command.script)
+            else url.scheme in ['http', 'https', 'ssh']
+        )
+    else:
         return False
-    # SSH needs a username and a splitter between the path
-    if url.scheme == 'ssh' and not (
-        '@' in command.script
-        and ':' in command.script
-    ):
-        return False
-    return url.scheme in ['http', 'https', 'ssh']
 
 
 def get_new_command(command):
-    return 'git clone ' + command.script
+    return f'git clone {command.script}'

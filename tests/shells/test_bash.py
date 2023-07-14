@@ -13,8 +13,7 @@ class TestBash(object):
 
     @pytest.fixture(autouse=True)
     def Popen(self, mocker):
-        mock = mocker.patch('thefuck.shells.bash.Popen')
-        return mock
+        return mocker.patch('thefuck.shells.bash.Popen')
 
     @pytest.fixture(autouse=True)
     def shell_aliases(self):

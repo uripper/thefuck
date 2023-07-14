@@ -40,5 +40,4 @@ def get_new_command(command):
             command_parts.pop(len(command_parts) - 1)
 
     arguments = re.findall(r'git push (.*)', command.output)[-1].replace("'", r"\'").strip()
-    return replace_argument(" ".join(command_parts), 'push',
-                            'push {}'.format(arguments))
+    return replace_argument(" ".join(command_parts), 'push', f'push {arguments}')

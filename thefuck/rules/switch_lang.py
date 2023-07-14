@@ -51,20 +51,16 @@ def _get_matched_layout(command):
     # result in a non-splitable script as per shlex
     cmd = command.script.split(' ')
     for source_layout in source_layouts:
-        is_all_match = True
-        for cmd_part in cmd:
-            if not all([ch in source_layout or ch in '-_' for ch in cmd_part]):
-                is_all_match = False
-                break
-
+        is_all_match = all(
+            all(ch in source_layout or ch in '-_' for ch in cmd_part)
+            for cmd_part in cmd
+        )
         if is_all_match:
             return source_layout
 
 
 def _switch(ch, layout):
-    if ch in layout:
-        return target_layout[layout.index(ch)]
-    return ch
+    return target_layout[layout.index(ch)] if ch in layout else ch
 
 
 def _switch_command(command, layout):
@@ -78,9 +74,7 @@ def _switch_command(command, layout):
 
 def _decompose_korean(command):
     def _change_double(ch):
-        if ch in DOUBLE_LIST:
-            return DOUBLE_MOD_LIST[DOUBLE_LIST.index(ch)]
-        return ch
+        return DOUBLE_MOD_LIST[DOUBLE_LIST.index(ch)] if ch in DOUBLE_LIST else ch
 
     hg_str = u''
     for ch in command.script:

@@ -31,7 +31,6 @@ def get_new_command(command):
 
     if fixed is not None:
         return replace_argument(command.script, stash_cmd, fixed)
-    else:
-        cmd = command.script_parts[:]
-        cmd.insert(2, 'save')
-        return ' '.join(cmd)
+    cmd = command.script_parts[:]
+    cmd.insert(2, 'save')
+    return ' '.join(cmd)

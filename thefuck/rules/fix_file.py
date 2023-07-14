@@ -54,10 +54,7 @@ def _search(output):
 
 
 def match(command):
-    if 'EDITOR' not in os.environ:
-        return False
-
-    return _search(command.output)
+    return False if 'EDITOR' not in os.environ else _search(command.output)
 
 
 @default_settings({'fixlinecmd': u'{editor} {file} +{line}',

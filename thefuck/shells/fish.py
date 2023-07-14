@@ -86,13 +86,10 @@ class Fish(Generic):
         return os.path.expanduser('~/.config/fish/fish_history')
 
     def _get_history_line(self, command_script):
-        return u'- cmd: {}\n   when: {}\n'.format(command_script, int(time()))
+        return f'- cmd: {command_script}\n   when: {int(time())}\n'
 
     def _script_from_history(self, line):
-        if '- cmd: ' in line:
-            return line.split('- cmd: ', 1)[1]
-        else:
-            return ''
+        return line.split('- cmd: ', 1)[1] if '- cmd: ' in line else ''
 
     def and_(self, *commands):
         return u'; and '.join(commands)

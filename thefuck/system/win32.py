@@ -19,14 +19,11 @@ def get_key():
         return const.KEY_MAPPING[ch]
     if ch == 'H':
         return const.KEY_UP
-    if ch == 'P':
-        return const.KEY_DOWN
-
-    return ch
+    return const.KEY_DOWN if ch == 'P' else ch
 
 
 def open_command(arg):
-    return 'cmd /c start ' + arg
+    return f'cmd /c start {arg}'
 
 
 try:

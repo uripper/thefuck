@@ -58,16 +58,14 @@ class Generic(object):
         history_file_name = self._get_history_file_name()
         if os.path.isfile(history_file_name):
             with io.open(history_file_name, 'r',
-                         encoding='utf-8', errors='ignore') as history_file:
+                                 encoding='utf-8', errors='ignore') as history_file:
 
                 lines = history_file.readlines()
                 if settings.history_limit:
                     lines = lines[-settings.history_limit:]
 
                 for line in lines:
-                    prepared = self._script_from_history(line) \
-                        .strip()
-                    if prepared:
+                    if prepared := self._script_from_history(line).strip():
                         yield prepared
 
     def and_(self, *commands):
@@ -91,14 +89,10 @@ class Generic(object):
         return self.decode_utf8(splitted)
 
     def encode_utf8(self, command):
-        if six.PY2:
-            return command.encode('utf8')
-        return command
+        return command.encode('utf8') if six.PY2 else command
 
     def decode_utf8(self, command_parts):
-        if six.PY2:
-            return [s.decode('utf8') for s in command_parts]
-        return command_parts
+        return [s.decode('utf8') for s in command_parts] if six.PY2 else command_parts
 
     def quote(self, s):
         """Return a shell-escaped version of the string s."""
@@ -142,9 +136,9 @@ class Generic(object):
         try:
             version = self._get_version()
         except Exception as e:
-            warn(u'Could not determine shell version: {}'.format(e))
+            warn(f'Could not determine shell version: {e}')
             version = ''
-        return u'{} {}'.format(self.friendly_name, version).rstrip()
+        return f'{self.friendly_name} {version}'.rstrip()
 
     def _create_shell_configuration(self, content, path, reload):
         return ShellConfiguration(

@@ -137,7 +137,7 @@ yum_operations = [
     'saerch', 'uninstall',
 ])
 def test_match(command):
-    assert match(Command('yum {}'.format(command), yum_invalid_op_text.format(command)))
+    assert match(Command(f'yum {command}', yum_invalid_op_text.format(command)))
 
 
 @pytest.mark.parametrize('command, output', [

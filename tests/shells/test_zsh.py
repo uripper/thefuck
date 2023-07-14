@@ -13,8 +13,7 @@ class TestZsh(object):
 
     @pytest.fixture(autouse=True)
     def Popen(self, mocker):
-        mock = mocker.patch('thefuck.shells.zsh.Popen')
-        return mock
+        return mocker.patch('thefuck.shells.zsh.Popen')
 
     @pytest.fixture(autouse=True)
     def shell_aliases(self):

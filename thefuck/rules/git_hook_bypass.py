@@ -19,7 +19,7 @@ def get_new_command(command):
         if hooked_command in command.script_parts
     )
     return replace_argument(
-        command.script, hooked_command, hooked_command + " --no-verify"
+        command.script, hooked_command, f"{hooked_command} --no-verify"
     )
 
 
