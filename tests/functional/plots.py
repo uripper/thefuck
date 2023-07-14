@@ -1,8 +1,8 @@
 def _set_confirmation(proc, require):
     proc.sendline(u'mkdir -p ~/.thefuck')
     proc.sendline(
-        u'echo "require_confirmation = {}" > ~/.thefuck/settings.py'.format(
-            require))
+        f'echo "require_confirmation = {require}" > ~/.thefuck/settings.py'
+    )
 
 
 def with_confirmation(proc, TIMEOUT):
@@ -23,8 +23,7 @@ def with_confirmation(proc, TIMEOUT):
 def history_changed(proc, TIMEOUT, *to):
     """Ensures that history changed."""
     proc.send('\033[A')
-    pattern = [TIMEOUT]
-    pattern.extend(to)
+    pattern = [TIMEOUT, *to]
     assert proc.expect(pattern)
 
 

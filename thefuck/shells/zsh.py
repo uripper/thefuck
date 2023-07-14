@@ -48,8 +48,7 @@ class Zsh(Generic):
             '''.format(user_command_mark=mark,
                        app_alias=self.app_alias(alias_name))
         else:
-            log_path = os.path.join(
-                gettempdir(), 'thefuck-script-log-{}'.format(uuid4().hex))
+            log_path = os.path.join(gettempdir(), f'thefuck-script-log-{uuid4().hex}')
             return '''
                 export THEFUCK_INSTANT_MODE=True;
                 export THEFUCK_OUTPUT_LOG={log};
@@ -75,13 +74,10 @@ class Zsh(Generic):
                               os.path.expanduser('~/.zsh_history'))
 
     def _get_history_line(self, command_script):
-        return u': {}:0;{}\n'.format(int(time()), command_script)
+        return f': {int(time())}:0;{command_script}\n'
 
     def _script_from_history(self, line):
-        if ';' in line:
-            return line.split(';', 1)[1]
-        else:
-            return ''
+        return line.split(';', 1)[1] if ';' in line else ''
 
     def how_to_configure(self):
         return self._create_shell_configuration(

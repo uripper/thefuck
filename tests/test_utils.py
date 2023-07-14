@@ -257,7 +257,7 @@ class TestGetValidHistoryWithoutCurrent(object):
 
     @pytest.fixture(autouse=True)
     def bins(self, mocker):
-        callables = list()
+        callables = []
         for name in ['diff', 'ls', 'café']:
             bin_mock = mocker.Mock(name=name)
             bin_mock.configure_mock(name=name, is_dir=lambda: False)

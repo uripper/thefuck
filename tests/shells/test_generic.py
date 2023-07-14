@@ -35,7 +35,7 @@ class TestGeneric(object):
         history_lines(['ls', 'rm'])
         # We don't know what to do in generic shell with history lines,
         # so just ignore them:
-        assert list(shell.get_history()) == []
+        assert not list(shell.get_history())
 
     def test_split_command(self, shell):
         assert shell.split_command('ls') == ['ls']

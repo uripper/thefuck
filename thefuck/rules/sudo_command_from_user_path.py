@@ -3,8 +3,7 @@ from thefuck.utils import for_app, which, replace_argument
 
 
 def _get_command_name(command):
-    found = re.findall(r'sudo: (.*): command not found', command.output)
-    if found:
+    if found := re.findall(r'sudo: (.*): command not found', command.output):
         return found[0]
 
 
@@ -17,5 +16,6 @@ def match(command):
 
 def get_new_command(command):
     command_name = _get_command_name(command)
-    return replace_argument(command.script, command_name,
-                            u'env "PATH=$PATH" {}'.format(command_name))
+    return replace_argument(
+        command.script, command_name, f'env "PATH=$PATH" {command_name}'
+    )

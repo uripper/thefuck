@@ -13,11 +13,11 @@ def get_new_command(command):
         return command.script.replace("2", "3")
 
     last_arg = command.script_parts[-1]
-    help_command = last_arg + ' --help'
+    help_command = f'{last_arg} --help'
 
     # If there are no man pages for last_arg, suggest `last_arg --help` instead.
     # Otherwise, suggest `--help` after suggesting other man page sections.
-    if command.output.strip() == 'No manual entry for ' + last_arg:
+    if command.output.strip() == f'No manual entry for {last_arg}':
         return [help_command]
 
     split_cmd2 = command.script_parts

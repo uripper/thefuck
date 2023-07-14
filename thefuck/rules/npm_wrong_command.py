@@ -6,8 +6,9 @@ enabled_by_default = npm_available
 
 
 def _get_wrong_command(script_parts):
-    commands = [part for part in script_parts[1:] if not part.startswith('-')]
-    if commands:
+    if commands := [
+        part for part in script_parts[1:] if not part.startswith('-')
+    ]:
         return commands[0]
 
 
@@ -30,8 +31,7 @@ def _get_available_commands(stdout):
                 break
 
             for command in line.split(', '):
-                stripped = command.strip()
-                if stripped:
+                if stripped := command.strip():
                     yield stripped
 
 

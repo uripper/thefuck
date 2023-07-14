@@ -61,7 +61,7 @@ def get_args(cls, dist, header=None):
         header = cls.get_header()
     spec = str(dist.as_requirement())
     for type_ in 'console', 'gui':
-        group = type_ + '_scripts'
+        group = f'{type_}_scripts'
         for name, ep in dist.get_entry_map(group).items():
             # ensure_safe_name
             if re.search(r'[\\/]', name):
@@ -69,9 +69,7 @@ def get_args(cls, dist, header=None):
             script_text = TEMPLATE.format(
                           ep.module_name, ep.attrs[0], '.'.join(ep.attrs),
                           spec, group, name)
-            args = cls._get_script_args(type_, name, header, script_text)
-            for res in args:
-                yield res
+            yield from cls._get_script_args(type_, name, header, script_text)
 
 
 easy_install.ScriptWriter.get_args = get_args
@@ -94,7 +92,7 @@ def main():
         with open(manifest_path, 'a+') as manifest:
             manifest.seek(0)
             manifest_content = manifest.read()
-            if not 'include fastentrypoints.py' in manifest_content:
+            if 'include fastentrypoints.py' not in manifest_content:
                 manifest.write(('\n' if manifest_content else '')
                                + 'include fastentrypoints.py')
 
@@ -102,7 +100,7 @@ def main():
         with open(setup_path, 'a+') as setup:
             setup.seek(0)
             setup_content = setup.read()
-            if not 'import fastentrypoints' in setup_content:
+            if 'import fastentrypoints' not in setup_content:
                 setup.seek(0)
                 setup.truncate()
                 setup.write('import fastentrypoints\n' + setup_content)

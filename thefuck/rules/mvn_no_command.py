@@ -7,5 +7,4 @@ def match(command):
 
 
 def get_new_command(command):
-    return [command.script + ' clean package',
-            command.script + ' clean install']
+    return [f'{command.script} clean package', f'{command.script} clean install']

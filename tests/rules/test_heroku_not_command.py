@@ -14,8 +14,7 @@ suggest_output = '''
 
 @pytest.mark.parametrize('cmd', ['log'])
 def test_match(cmd):
-    assert match(
-        Command('heroku {}'.format(cmd), suggest_output))
+    assert match(Command(f'heroku {cmd}', suggest_output))
 
 
 @pytest.mark.parametrize('script, output', [
@@ -27,5 +26,5 @@ def test_not_match(script, output):
 @pytest.mark.parametrize('cmd, result', [
     ('log', 'heroku logs')])
 def test_get_new_command(cmd, result):
-    command = Command('heroku {}'.format(cmd), suggest_output)
+    command = Command(f'heroku {cmd}', suggest_output)
     assert get_new_command(command) == result

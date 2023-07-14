@@ -13,4 +13,4 @@ def match(command):
 
 
 def get_new_command(command):
-    return command.script + '.go'
+    return f'{command.script}.go'

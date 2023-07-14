@@ -13,20 +13,16 @@ patterns = [r"bind on address \('.*', (?P<port>\d+)\)",
 
 @memoize
 def _get_pid_by_port(port):
-    proc = Popen(['lsof', '-i', ':{}'.format(port)], stdout=PIPE)
+    proc = Popen(['lsof', '-i', f':{port}'], stdout=PIPE)
     lines = proc.stdout.read().decode().split('\n')
-    if len(lines) > 1:
-        return lines[1].split()[1]
-    else:
-        return None
+    return lines[1].split()[1] if len(lines) > 1 else None
 
 
 @memoize
 def _get_used_port(command):
     for pattern in patterns:
-        matched = re.search(pattern, command.output)
-        if matched:
-            return matched.group('port')
+        if matched := re.search(pattern, command.output):
+            return matched['port']
 
 
 def match(command):
@@ -37,4 +33,4 @@ def match(command):
 def get_new_command(command):
     port = _get_used_port(command)
     pid = _get_pid_by_port(port)
-    return shell.and_(u'kill {}'.format(pid), command.script)
+    return shell.and_(f'kill {pid}', command.script)

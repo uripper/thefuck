@@ -24,10 +24,14 @@ class TestCorrectedCommand(object):
                 CorrectedCommand('ls', None, 200)} == {CorrectedCommand('ls')}
 
     def test_representable(self):
-        assert '{}'.format(CorrectedCommand('ls', None, 100)) == \
-               'CorrectedCommand(script=ls, side_effect=None, priority=100)'
-        assert u'{}'.format(CorrectedCommand(u'echo café', None, 100)) == \
-               u'CorrectedCommand(script=echo café, side_effect=None, priority=100)'
+        assert (
+            f"{CorrectedCommand('ls', None, 100)}"
+            == 'CorrectedCommand(script=ls, side_effect=None, priority=100)'
+        )
+        assert (
+            f"{CorrectedCommand('echo café', None, 100)}"
+            == u'CorrectedCommand(script=echo café, side_effect=None, priority=100)'
+        )
 
     @pytest.mark.parametrize('script, printed, override_settings', [
         ('git branch', 'git branch', {'repeat': False, 'debug': False}),
@@ -100,15 +104,16 @@ class TestRule(object):
         assert capsys.readouterr()[1].split('\n')[0] == '[WARN] Rule test:'
 
     def test_get_corrected_commands_with_rule_returns_list(self):
-        rule = Rule(get_new_command=lambda x: [x.script + '!', x.script + '@'],
-                    priority=100)
+        rule = Rule(
+            get_new_command=lambda x: [f'{x.script}!', f'{x.script}@'],
+            priority=100,
+        )
         assert (list(rule.get_corrected_commands(Command('test', '')))
                 == [CorrectedCommand(script='test!', priority=100),
                     CorrectedCommand(script='test@', priority=200)])
 
     def test_get_corrected_commands_with_rule_returns_command(self):
-        rule = Rule(get_new_command=lambda x: x.script + '!',
-                    priority=100)
+        rule = Rule(get_new_command=lambda x: f'{x.script}!', priority=100)
         assert (list(rule.get_corrected_commands(Command('test', '')))
                 == [CorrectedCommand(script='test!', priority=100)])
 

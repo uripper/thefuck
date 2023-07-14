@@ -38,8 +38,7 @@ class Command(object):
             try:
                 self._script_parts = shell.split_command(self.script)
             except Exception:
-                logs.debug(u"Can't split command script {} because:\n {}".format(
-                    self, sys.exc_info()))
+                logs.debug(f"Can't split command script {self} because:\n {sys.exc_info()}")
                 self._script_parts = []
 
         return self._script_parts
@@ -51,8 +50,7 @@ class Command(object):
             return False
 
     def __repr__(self):
-        return u'Command(script={}, output={})'.format(
-            self.script, self.output)
+        return f'Command(script={self.script}, output={self.output})'
 
     def update(self, **kwargs):
         """Returns new command with replaced fields.
@@ -119,12 +117,7 @@ class Rule(object):
             return False
 
     def __repr__(self):
-        return 'Rule(name={}, match={}, get_new_command={}, ' \
-               'enabled_by_default={}, side_effect={}, ' \
-               'priority={}, requires_output={})'.format(
-                   self.name, self.match, self.get_new_command,
-                   self.enabled_by_default, self.side_effect,
-                   self.priority, self.requires_output)
+        return f'Rule(name={self.name}, match={self.match}, get_new_command={self.get_new_command}, enabled_by_default={self.enabled_by_default}, side_effect={self.side_effect}, priority={self.priority}, requires_output={self.requires_output})'
 
     @classmethod
     def from_path(cls, path):
@@ -136,13 +129,13 @@ class Rule(object):
         """
         name = path.name[:-3]
         if name in settings.exclude_rules:
-            logs.debug(u'Ignoring excluded rule: {}'.format(name))
+            logs.debug(f'Ignoring excluded rule: {name}')
             return
-        with logs.debug_time(u'Importing rule: {};'.format(name)):
+        with logs.debug_time(f'Importing rule: {name};'):
             try:
                 rule_module = load_source(name, str(path))
             except Exception:
-                logs.exception(u"Rule {} failed to load".format(name), sys.exc_info())
+                logs.exception(f"Rule {name} failed to load", sys.exc_info())
                 return
         priority = getattr(rule_module, 'priority', DEFAULT_PRIORITY)
         return cls(name, rule_module.match,
@@ -176,7 +169,7 @@ class Rule(object):
             return False
 
         try:
-            with logs.debug_time(u'Trying rule: {};'.format(self.name)):
+            with logs.debug_time(f'Trying rule: {self.name};'):
                 if self.match(command):
                     return True
         except Exception:
@@ -225,8 +218,7 @@ class CorrectedCommand(object):
         return (self.script, self.side_effect).__hash__()
 
     def __repr__(self):
-        return u'CorrectedCommand(script={}, side_effect={}, priority={})'.format(
-            self.script, self.side_effect, self.priority)
+        return f'CorrectedCommand(script={self.script}, side_effect={self.side_effect}, priority={self.priority})'
 
     def _get_script(self):
         """Returns fixed commands script.
@@ -235,14 +227,10 @@ class CorrectedCommand(object):
         of running fuck in case fixed command fails again.
 
         """
-        if settings.repeat:
-            repeat_fuck = '{} --repeat {}--force-command {}'.format(
-                get_alias(),
-                '--debug ' if settings.debug else '',
-                shell.quote(self.script))
-            return shell.or_(self.script, repeat_fuck)
-        else:
+        if not settings.repeat:
             return self.script
+        repeat_fuck = f"{get_alias()} --repeat {'--debug ' if settings.debug else ''}--force-command {shell.quote(self.script)}"
+        return shell.or_(self.script, repeat_fuck)
 
     def run(self, old_cmd):
         """Runs command from rule for passed command.
@@ -255,7 +243,8 @@ class CorrectedCommand(object):
         if settings.alter_history:
             shell.put_to_history(self.script)
         # This depends on correct setting of PYTHONIOENCODING by the alias:
-        logs.debug(u'PYTHONIOENCODING: {}'.format(
-            os.environ.get('PYTHONIOENCODING', '!!not-set!!')))
+        logs.debug(
+            f"PYTHONIOENCODING: {os.environ.get('PYTHONIOENCODING', '!!not-set!!')}"
+        )
 
         sys.stdout.write(self._get_script())

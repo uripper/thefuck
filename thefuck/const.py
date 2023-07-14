@@ -6,7 +6,7 @@ class _GenConst(object):
         self._name = name
 
     def __repr__(self):
-        return u'<const: {}>'.format(self._name)
+        return f'<const: {self._name}>'
 
 
 KEY_UP = _GenConst('↑')

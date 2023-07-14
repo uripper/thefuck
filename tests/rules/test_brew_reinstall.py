@@ -24,5 +24,5 @@ def test_not_match(script):
     ('brew install bar zap', 'bar zap')])
 def test_get_new_command(script, formula):
     command = Command(script, output)
-    new_command = 'brew reinstall {}'.format(formula)
+    new_command = f'brew reinstall {formula}'
     assert get_new_command(command) == new_command

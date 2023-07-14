@@ -21,11 +21,9 @@ def _get_used_executables(command):
 def get_new_command(command):
     old_command = command.script_parts[0]
 
-    # One from history:
-    already_used = get_closest(
-        old_command, _get_used_executables(command),
-        fallback_to_first=False)
-    if already_used:
+    if already_used := get_closest(
+        old_command, _get_used_executables(command), fallback_to_first=False
+    ):
         new_cmds = [already_used]
     else:
         new_cmds = []

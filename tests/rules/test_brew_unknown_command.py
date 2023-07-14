@@ -17,7 +17,7 @@ def brew_unknown_cmd2():
 def test_match(brew_unknown_cmd):
     assert match(Command('brew inst', brew_unknown_cmd))
     for command in _brew_commands():
-        assert not match(Command('brew ' + command, ''))
+        assert not match(Command(f'brew {command}', ''))
 
 
 def test_get_new_command(brew_unknown_cmd, brew_unknown_cmd2):

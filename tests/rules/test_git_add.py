@@ -11,8 +11,7 @@ def path_exists(mocker):
 
 @pytest.fixture
 def output(target):
-    return ("error: pathspec '{}' did not match any "
-            'file(s) known to git.'.format(target))
+    return f"error: pathspec '{target}' did not match any file(s) known to git."
 
 
 @pytest.mark.parametrize('script, target', [

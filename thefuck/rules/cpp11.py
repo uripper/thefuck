@@ -9,4 +9,4 @@ def match(command):
 
 
 def get_new_command(command):
-    return command.script + ' -std=c++11'
+    return f'{command.script} -std=c++11'

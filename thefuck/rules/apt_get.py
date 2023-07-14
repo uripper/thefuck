@@ -36,11 +36,13 @@ def get_package(executable):
 
 
 def match(command):
-    if 'not found' in command.output or 'not installed' in command.output:
-        executable = _get_executable(command)
-        return not which(executable) and get_package(executable)
-    else:
+    if (
+        'not found' not in command.output
+        and 'not installed' not in command.output
+    ):
         return False
+    executable = _get_executable(command)
+    return not which(executable) and get_package(executable)
 
 
 def get_new_command(command):

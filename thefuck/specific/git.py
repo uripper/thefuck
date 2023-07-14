@@ -17,15 +17,16 @@ def git_support(fn, command):
     if command.output and 'trace: alias expansion:' in command.output:
         search = re.search("trace: alias expansion: ([^ ]*) => ([^\n]*)",
                            command.output)
-        alias = search.group(1)
+        alias = search[1]
 
         # by default git quotes everything, for example:
         #     'commit' '--amend'
         # which is surprising and does not allow to easily test for
         # eg. 'git commit'
-        expansion = ' '.join(shell.quote(part)
-                             for part in shell.split_command(search.group(2)))
-        new_script = re.sub(r"\b{}\b".format(alias), expansion, command.script)
+        expansion = ' '.join(
+            shell.quote(part) for part in shell.split_command(search[2])
+        )
+        new_script = re.sub(f"\b{alias}\b", expansion, command.script)
 
         command = command.update(script=new_script)
 
